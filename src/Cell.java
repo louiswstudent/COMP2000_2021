@@ -7,11 +7,10 @@ class Cell extends Rectangle {
     public Cell(int x, int y){
         super(x, y, size, size);
     }
+
     //methods
     void paint(Graphics g, Point mousePos){
-        if(mousePos==null){ //npe aversion
-            g.setColor(Color.RED);  
-        }else if(this.contains(mousePos)){ 
+        if(contains(mousePos)){
             g.setColor(Color.GRAY);
         } else {
             g.setColor(Color.WHITE);
@@ -19,5 +18,14 @@ class Cell extends Rectangle {
         g.fillRect(x,y,size,size);
         g.setColor(Color.BLACK);
         g.drawRect(x,y,size,size);
+    }
+
+    @Override
+    public boolean contains(Point p){
+        if (p != null){
+            return(super.contains(p));
+        } else {
+            return false;
+        }
     }
 }

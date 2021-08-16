@@ -1,17 +1,23 @@
+import java.awt.Graphics;
 import java.awt.*;
-class Stage {
+
+public class Stage {
     Grid grid;
-    Actor[] actors; // Actor classes?
-    public Stage(Grid g, Actor[] acs){
-        this.grid = g;
-        this.actors=acs;
+    Actor train;
+    Actor car;
+    Actor boat;
+
+    public Stage() {
+        grid = new Grid();
+        train = new Train(grid.cellAtColRow(0, 0));
+        car = new Car(grid.cellAtColRow(0, 15));
+        boat = new Boat(grid.cellAtColRow(12, 9));
     }
 
-    // methods
-    public void paint(Graphics g, Point mousePos){
-        grid.paint(g, mousePos);
-        for(int i = 0; i < actors.length; i++){
-            actors[i].paint(g, mousePos);
-        }
+    public void paint(Graphics g, Point mouseLoc) {
+        grid.paint(g, mouseLoc);
+        train.paint(g);
+        car.paint(g);
+        boat.paint(g);
     }
 }

@@ -1,5 +1,4 @@
 import java.awt.*;
-
 class Grid {
     //fields
     Cell[][] cells = new Cell[20][20];
@@ -19,5 +18,9 @@ class Grid {
                 cells[i][j].paint(g, mousePos);
             }
         }
+    }
+
+    public Cell cellAtColRow(int c, int r) {
+        return cells[c][r];
     }
 }
