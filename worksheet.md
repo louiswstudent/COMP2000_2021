@@ -82,6 +82,7 @@ Draw a picture of the inheritance hierarchy you have created.  You should (loose
 Did you notice the repetition in the stage paint method?  All three actors have the `paint` method called on them.  In fact, we might later want to have dozens of actors on the stage at any one time, we don't want dozens of calls to `someone.paint(g);`.  What we need is a collection to store all the actors, something like an array that we can put them all in.  Then we can just loop over that array and call  `paint` on every element.  _I think_ we should use an `ArrayList` (https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html).  Notice it is a generic collection?  You will need to use generics to make this work.  Put all the actors in a single array list called `actors` and then loop over this list to paint them.  Once you have done that you might like to add more actors to the stage.
 
 🤔 In my solution, I will declare the actors list as a `List` instead of an `ArrayList`.  Any idea why?  Why does this even work?
+A: Because the properties of List are synonymous with the ones we are using from ArrayList, which is of a Collection, and that ArrayList inherits the List class.
 
 # Task 11
 
@@ -178,7 +179,7 @@ Add the following method to `Grid` that will return whatever cell is located aro
 ~~~~~
 public Optional<Cell> cellAtPoint(Point p)
 ~~~~~
-
 🤔 How about we improve the `cellAtColRow` method now we know about optional containers?
+I don't think these changes are improvements.
 
-🤔 Now that we have `cellAtPoint`, lets use it.  Grow the app window to 880x720 so we have some clear space to the right of the grid.  In this space, put the details of whatever cell we are hoving over.  For example, you might put the type of cell that is located there, and what it's movement cost is.  There are many ways to do this, but one good way is to call `cellAtPoint` while painting the stage and use the resulting cell information.
+🤔 Now that we have `cellAtPoint`, lets use it.  Grow the app window to 880x720 so we have some clear space to the right of the grid.  In this space, put the details of whatever cell we are hoving over.  For example, you might put the type of cell that is located there, and what it's movement cost is. There are many ways to do this, but one good way is to call `cellAtPoint` while painting the stage and use the resulting cell information.

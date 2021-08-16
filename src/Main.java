@@ -1,21 +1,18 @@
 import javax.swing.*;
 import java.awt.*;
 class Main extends JFrame {
-    
     class App extends JPanel {
-        
         Stage stage;
-
         public App() {
-            setPreferredSize(new Dimension(720, 720));
+            setPreferredSize(new Dimension(880, 720));
             stage = new Stage();
         }
 
         @Override
         public void paint(Graphics g) {
-            stage.paint(g, getMousePosition());
+            Point mousePos = getMousePosition();
+            stage.paint(g, mousePos);
         }
-
     }
 
     public static void main(String[] args) throws Exception {
@@ -34,6 +31,7 @@ class Main extends JFrame {
     public void run() {
         while (true) {
             this.repaint();
+
         }
     }
 }
