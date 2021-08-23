@@ -36,8 +36,7 @@ class Grid {
       }
 
     public void paint(Graphics g, Point mousePos) {
-        Consumer<Cell> paint = list -> list.paint(g, mousePos);
-        this.doToEachCell(paint);
+        this.doToEachCell(cell -> cell.paint(g, mousePos));
         //.paint(g, mousePos);
     }
 
