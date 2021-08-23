@@ -7,10 +7,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class StageReader {
-    public static Stage readStage(String path) throws IOException {
+    public static Stage readStage(String path) {
         Stage stage = new Stage();
         Properties props = (new Properties());
-        props.load(new FileInputStream(path));
+        try { 
+            props.load(new FileInputStream(path));
+        } catch (IOException ex) {
+            //File could not be loaded
+            System.out.println("IOException! Could not read stage file!");
+        } catch (IllegalArgumentException iae) {
+            System.out.println("IllegalArgumentException! Invalid Unicode! STICK TO UTF8");
+        } catch (NullPointerException iae) {
+            System.out.println("NullPointerException! Stage file is null!");
+        }
+
+
         for (String key : props.stringPropertyNames()) {
             System.out.println(key);
             String value = props.getProperty(key);

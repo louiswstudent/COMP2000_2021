@@ -38,6 +38,11 @@ class Main extends JFrame {
     public void run() {
         while (true) {
             this.repaint();
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException lag) {
+                
+            }
         }
     }
 }

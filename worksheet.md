@@ -198,6 +198,7 @@ Currently, the game loop (in `Main.run`) is running as fast as it can.   This ju
 Sleeping a thread throws an `InterruptedException` so you will need to catch that. In fact, we don't care about the thread being interrupted so the catch block should just report the fact it was interrupted, print out a representation (via `toString`) of the exception that was thrown, and continue on as normal.
 
 🤔 Can you even cause the exception to be thrown?
+Yes if the system chokes elsewhere that causes the thread to be killed (stack overflow for example)
 
 # Task 16
 

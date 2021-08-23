@@ -1,6 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 class Grid {
     Cell[][] cells = new Cell[20][20];
@@ -21,12 +22,23 @@ class Grid {
         return (int) col - 65;
     }
 
-    public void paint(Graphics g, Point mousePos) {
+     /**
+     * Takes a cell consumer (i.e. a function that has a single `Cell` argument and
+     * returns `void`) and applies that consumer to each cell in the grid.
+     * @param func The `Cell` to `void` function to apply at each spot.
+     */
+    public void doToEachCell(Consumer<Cell> func) {
         for(int i = 0; i < cells.length; i++) {
             for(int j = 0; j < cells[i].length; j++) { 
-                cells[i][j].paint(g, mousePos);
+                func.accept(cells[i][j]);
             }
         }
+      }
+
+    public void paint(Graphics g, Point mousePos) {
+        Consumer<Cell> paint = list -> list.paint(g, mousePos);
+        this.doToEachCell(paint);
+        //.paint(g, mousePos);
     }
 
     private Optional<Cell> cellAtColRow(int c, int r) {
