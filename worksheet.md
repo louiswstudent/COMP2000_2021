@@ -31,10 +31,9 @@ Red vs. Blue
 ~~~~~
 
 # Task 3
+
 Draw a 20 by 20 grid on a 720x720 window.  Each cell in the grid should be 35 pixels high and wide and the grid should be drawn 10 pixels off the top and left borders of the screen.  To do this, you should use the `Graphics` class from the Java libraries.  Be sure to consult the tips video for this task (it is a link in iLearn).  Without it, you will be very confused.
 
-# fine
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Task 4
 
 The "grid" has no identity - it is just drawn.  Later on we will need to do lots of things "with" this grid.  We will modify it and adjust it and ask it questions.  Our task here is to refactor the program to give this grid an identity.  We will create an object to represent the grid and will give that object its own `paint` method for drawing the grid.
@@ -48,11 +47,11 @@ Modify the program to make these things happen.  Make a `Grid` class and a `Cell
 Anything that is a `JFrame` or `JPanel` can find out the position of the mouse using `getMousePosition`.  Modify your program so that mousing over a cell will "highlight" it.  Highlighted cells should be drawn in grey.  You may have to think about how you will get the mouse position from the place you can read it, to the place it is needed (the `paint` method of a `Cell` object).
 
 # Task 6
+
 Our `Cell` class is really a specialised rectangle and the Java API already has a `Rectangle` class.  Have `Cell` inherit from `java.awt.Rectangle` (https://docs.oracle.com/javase/8/docs/api/java/awt/Rectangle.html).  It will be good to call `super` in the `Cell` constructor and to use the `contains` method that comes in `Rectangle` instead of your own.  NB:  The `contains` we wrote was graceful when given a `null` pointer for the point, the one from `Rectangle` is not, you will need to "protect" it in some way.
 
-DONE
-
 # Task 7
+
 Define a `Stage` class that can contain one `Grid` object and many `Actor` objects.  There must be three separate actors, each a subclass of a `Actor` _interface_ and each must have its own `paint` method.  The `paint` method must take a `Graphics` parameter and draw the actor on that graphic.  Have the `paint` method specified in the `Actor` interface and have each subclass define it.
 
 Since `Actors`s are drawing themselves, they need to know where they are on the screen so each will have a `Cell` field (that is set in the constructor) indicating where on the grid they are.
@@ -62,8 +61,6 @@ Have the program start with 1 grid and 3 actors:
   * Train (drawn red)
   * Car (drawn purple)
   * Boat (drawn orange)
-
-DONE
 
 # Task 8
 
@@ -82,7 +79,6 @@ Draw a picture of the inheritance hierarchy you have created.  You should (loose
 Did you notice the repetition in the stage paint method?  All three actors have the `paint` method called on them.  In fact, we might later want to have dozens of actors on the stage at any one time, we don't want dozens of calls to `someone.paint(g);`.  What we need is a collection to store all the actors, something like an array that we can put them all in.  Then we can just loop over that array and call  `paint` on every element.  _I think_ we should use an `ArrayList` (https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html).  Notice it is a generic collection?  You will need to use generics to make this work.  Put all the actors in a single array list called `actors` and then loop over this list to paint them.  Once you have done that you might like to add more actors to the stage.
 
 🤔 In my solution, I will declare the actors list as a `List` instead of an `ArrayList`.  Any idea why?  Why does this even work?
-A: Because the properties of List are synonymous with the ones we are using from ArrayList, which is of a Collection, and that ArrayList inherits the List class.
 
 # Task 11
 
@@ -179,7 +175,47 @@ Add the following method to `Grid` that will return whatever cell is located aro
 ~~~~~
 public Optional<Cell> cellAtPoint(Point p)
 ~~~~~
-🤔 How about we improve the `cellAtColRow` method now we know about optional containers?
-I don't think these changes are improvements.
 
-🤔 Now that we have `cellAtPoint`, lets use it.  Grow the app window to 880x720 so we have some clear space to the right of the grid.  In this space, put the details of whatever cell we are hoving over.  For example, you might put the type of cell that is located there, and what it's movement cost is. There are many ways to do this, but one good way is to call `cellAtPoint` while painting the stage and use the resulting cell information.
+🤔 How about we improve the `cellAtColRow` method now we know about optional containers?
+
+🤔 Now that we have `cellAtPoint`, lets use it.  Grow the app window to 1024x720 so we have some clear space to the right of the grid.  In this space, put the details of whatever cell we are hoving over.  For example, you might put the type of cell that is located there, and what it's elevation is.  There are many ways to do this, but one good way is to call `cellAtPoint` while painting the stage and use the resulting cell information.
+# Task 13
+
+Our task now is to add the ability to read in configuration data from a file.  Someone else at the company (person A) has tried and has committed some broken code.
+
+A file is kept in a "data" folder called "stage1.rvb". That file has one line for each configuration item.  We begin with just the character locations.
+
+This all seems OK, but they are getting an error on the build.  Track down the error and fix it for them.
+
+# Task 14
+
+At the moment, the file reading code will thrown an exception if it fails to read a file.  You should change this code so that _it won't ever throw an exception_.  This means you will have to think hard about what to do on a failed file read.
+
+# Task 15
+
+Currently, the game loop (in `Main.run`) is running as fast as it can.   This just burns CPU cycles and heats up your computer needlessly.  Your task is to "fix" the frame-rate so we are not pointlessly burning CPU power. You can do this by asking the current thread to sleep for a period of time using `Thread.sleep`. We want the frame-rate to be about 50 frames per second, that means we need the loop to take 20ms to complete.
+
+Sleeping a thread throws an `InterruptedException` so you will need to catch that. In fact, we don't care about the thread being interrupted so the catch block should just report the fact it was interrupted, print out a representation (via `toString`) of the exception that was thrown, and continue on as normal.
+
+🤔 Can you even cause the exception to be thrown?
+
+# Task 16
+
+Add the following method to the `Grid` class
+
+~~~~~
+    /**
+     * Takes a cell consumer (i.e. a function that has a single `Cell` argument and
+     * returns `void`) and applies that consumer to each cell in the grid.
+     * @param func The `Cell` to `void` function to apply at each spot.
+     */
+    public void doToEachCell(Consumer<Cell> func) {
+      // Your job to add the body
+    }
+~~~~~
+
+ Notice that the method accepts a `Consumer` functional interface.
+
+ Now use this method to turn the `paint` method of the `Grid` class into a single line of code.  I.e. remove the double-nested loop and replace it with a call to `doToEachCell`.
+
+🤔 Can you find anywhere else this is useful?  🤔🤔 Can you make any other useful _higher order_ methods?
