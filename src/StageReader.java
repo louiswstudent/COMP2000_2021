@@ -12,16 +12,13 @@ class StageReader {
         Properties props = (new Properties());
         try { 
             props.load(new FileInputStream(path));
-        } catch (IOException ex) {
-            //File could not be loaded
+        } catch (IOException ex) { //File could not be loaded (path/obfusc)
             System.out.println("IOException! Could not read stage file!");
-        } catch (IllegalArgumentException iae) {
+        } catch (IllegalArgumentException iae) { // unicode
             System.out.println("IllegalArgumentException! Invalid Unicode! STICK TO UTF8");
-        } catch (NullPointerException iae) {
+        } catch (NullPointerException iae) { // null
             System.out.println("NullPointerException! Stage file is null!");
         }
-
-
         for (String key : props.stringPropertyNames()) {
             System.out.println(key);
             String value = props.getProperty(key);

@@ -41,7 +41,7 @@ class Main extends JFrame {
             try {
                 Thread.sleep(20);
             } catch (InterruptedException lag) {
-                
+                System.out.println(lag.toString());
             }
         }
     }
