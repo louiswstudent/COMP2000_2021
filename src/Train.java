@@ -1,52 +1,41 @@
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Polygon;
 import java.util.ArrayList;
+
 public class Train extends Actor {
     public Train(Cell inLoc) {
         loc = inLoc;
         color = Color.RED;
-        body = new ArrayList<Polygon>();
-         // Local Namespace 
-         int x0 = loc.x; // x-startpos
-         int y0 = loc.y; // y-startpos
-         int x = loc.width; // width
-         int y = loc.height; // height
-         // Body
-         Polygon poly = new Polygon();
-         poly.addPoint(x0+x/10, y0+y*6/20);
-         poly.addPoint(x0+x*19/20, y0+y*6/20);
-         poly.addPoint(x0+x*19/20, y0+y*16/20);
-         poly.addPoint(x0+x/10, y0+y*16/20);
-         body.add(poly);
-         
-        // Breaker
-        poly = new Polygon();
-        poly.addPoint(x0+x*2/10, y0+y*4/20);
-        poly.addPoint(x0+x*6/20, y0+y*4/20);
-        poly.addPoint(x0+x*6/20, y0+y*18/20);
-        poly.addPoint(x0+x*2/10, y0+y*18/20);
-        body.add(poly);
-
-        // Wheels
-         Polygon front = new Polygon();
-         Polygon mid = new Polygon();
-         Polygon back = new Polygon();
-         Polygon top = new Polygon();
-         double circleX;
-         double circleY;
-         int sides = 12;
-         int angle = 180/sides;
-         int r = 3; // radius
-         for(int s=0; s<=sides; s++) {
-            circleX = (-r + 2*s*r/sides)*x/20;
-            circleY = (r*Math.sin(Math.toRadians(s*angle)))*y/20;
-            front.addPoint(x0 + 5*x/20 + (int) circleX, y0+16*y/20 + (int) circleY);
-            mid.addPoint(x0 + 9*x/20 + (int) circleX, y0+16*y/20 + (int) circleY);
-            back.addPoint(x0 + 16*x/20 + (int) circleX, y0+16*y/20 + (int) circleY);
-            top.addPoint(x0 + 16*x/20 + (int) circleX, y0+6*y/20 - (int) circleY);
-         }
-        body.add(front);
-        body.add(back);
-        body.add(mid);
-        body.add(top);
+        display = new ArrayList<Polygon>();
+        int sides=20;
+        int angle;
+        double circleX;
+        double circleY;
+        Polygon rearWheel = new Polygon();
+        Polygon midWheel = new Polygon();
+        Polygon frontWheel = new Polygon();
+        angle = 360/sides;
+        for(int s=0; s<=sides; s++) {
+            circleX = (3.0*Math.sin(Math.toRadians(s*angle)));
+            circleY = (3.0*Math.cos(Math.toRadians(s*angle)));
+            rearWheel.addPoint(loc.x + 9 + (int) circleX, loc.y + 25 + (int) circleY);
+            midWheel.addPoint(loc.x + 17 + (int) circleX, loc.y + 25 + (int) circleY);
+            frontWheel.addPoint(loc.x + 23 + (int) circleX, loc.y + 25 + (int) circleY);
+        }
+        Polygon cab = new Polygon();
+        cab.addPoint(loc.x + 6, loc.y + 7);
+        cab.addPoint(loc.x + 11, loc.y + 7);
+        cab.addPoint(loc.x + 11, loc.y + 20);
+        cab.addPoint(loc.x + 6, loc.y + 20);
+        Polygon body = new Polygon();
+        body.addPoint(loc.x + 11, loc.y + 14);
+        body.addPoint(loc.x + 24, loc.y + 14);
+        body.addPoint(loc.x + 29, loc.y + 20);
+        body.addPoint(loc.x + 11, loc.y + 20);
+        display.add(rearWheel);
+        display.add(midWheel);
+        display.add(frontWheel);
+        display.add(cab);
+        display.add(body);
     }
 }
