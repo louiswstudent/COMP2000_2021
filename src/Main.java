@@ -2,7 +2,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+// Louis Wellock
+// Code is continued from my wk5 solution, since, the repo wasnt showing up with the milestone for some reason. Should be okay :)
 class Main extends JFrame {
     
     class App extends JPanel {

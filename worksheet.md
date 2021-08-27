@@ -219,4 +219,8 @@ Add the following method to the `Grid` class
 
  Now use this method to turn the `paint` method of the `Grid` class into a single line of code.  I.e. remove the double-nested loop and replace it with a call to `doToEachCell`.
 
-🤔 Can you find anywhere else this is useful?  🤔🤔 Can you make any other useful _higher order_ methods?
+🤔 Can you find anywhere else this is useful?  
+Cleaning a stage of selections
+
+🤔🤔 Can you make any other useful _higher order_ methods?
+ResetStage
