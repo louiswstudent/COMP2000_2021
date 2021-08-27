@@ -12,5 +12,5 @@ public abstract class Terrain {
     }
     public Color getColor() { // Realistically, we only load this to Cell object once. But the method is more appropriate for future use... probably.
         return Color.getHSBColor(hue, sat, (float)(0.5 + elevation/2));
-    }
-}
+    } //  We made an awkward embarassing mistake where we make declaration type conversions rather than conversions here, which can be seen as a non-mistake considering we get ot store floats instead
+} // But in terms of due process it takes way more time to make declarations every time we use a decimal number...
