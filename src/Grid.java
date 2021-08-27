@@ -75,24 +75,44 @@ class Grid {
 
             Along the sides of the road, if there's grass. We place a building at a 20% chance.
 
-            Mountains we generate in corners and cluster them together. Ignoring everything, because they're the boss of this gym.
+            Mountains we generate in corners and cluster them together. Ignoring everything, because they're the boss.
 
             Should we write all of this somewhere else? probably
         */
-        // B is base/current position, n is the normal vector
-        int[] b = getEdgePoint();
-        int[] n = getEdgeNormal(b);
-        Cell cell;
-        while (pointInDomain(b)) {
-            cell = cells[b[0]][b[1]];
-            cell.terrain = new Water();
-            b[0] += Math.round(n[0]/2 + Math.random()/2);
-            b[1] += Math.round(n[0]/2 + Math.random()/2);
+        int[] g = new int[2]; // goal
+        int[] b; // base/current position
+        int[] n; //the normal vector
+        int p; // polarity
+        Cell cell; // selected cell
+        // Water streams
+        for (int i=0;i<4;i++) { // generate 4 streams
+            b  = getEdgePoint();
+            n = getEdgeNormal(b);
+           
+            while (pointInDomain(b)) {
+                cell = cells[b[0]][b[1]];
+                cell.terrain = new Water();
+                b[0] += Math.round(n[0]/1.5 + Math.random());
+                b[1] += Math.round(n[1]/1.5 + Math.random());
+            }
+        }
+         // Mountain clusters
+        for (int i=0;i<3;i++) { // generate 3 mountain ranges.
+            b = getEdgePoint();
+            n = getEdgeNormal(b);
+            int s = n[0]+n[1];
+            for (int x=0;x<7;x++) { // Bongo-select method... Don't judge.
+                g[0] = b[0]+s*(int)Math.round(Math.random()*4);
+                g[1] = b[1]+s*(int)Math.round(Math.random()*4);
+                if (pointInDomain(g)) {
+                    cell = cells[g[0]][g[1]];
+                    cell.terrain = new Mountain();
+                }
+            }
         }
 
         // now, a road.
-        int[] g = new int[2]; // goal
-        int p; // polarity
+        
         b = getEdgePoint();
         n = getEdgeNormal(b);
         while (pointInDomain(b)) {
@@ -100,33 +120,33 @@ class Grid {
             cell.terrain = new Road();
             b[0] += n[0];
             b[1] += n[1];
-        }
-        
-        if (Math.random()<=0.5) { //add a building
-            p = (int)Math.floor(Math.random()*2)*2 -1; // polarity
-            g[0] = b[0]+n[1]*p;
-            g[1] = b[1]+n[0]*p;
-            if (pointInDomain(g)) {
-                cell = cells[g[0]][g[1]];
-                cell.terrain = new Building();
+            if (Math.random()<=0.35) { //add a building
+                p = 1; // polarity
+                if (Math.random()<0.5)
+                    p=-1;
+                g[0] = b[0]+n[1]*p;
+                g[1] = b[1]+n[0]*p;
+                if (pointInDomain(g)) {
+                    cell = cells[g[0]][g[1]];
+                    cell.terrain = new Building();
+                }
+            }
+            if (Math.random()<=0.2) { // Chance for a split road
+                p = 1; // polarity
+                if (Math.random()<0.5)
+                    p=-1;
+                int[] o = new int[2];// Idk how to replicate by value XD 
+                o[0] = b[0];
+                o[1] = b[1];
+                while (pointInDomain(o)) {
+                    cell = cells[o[0]][o[1]];
+                    cell.terrain = new Road();
+                    o[0] += n[1]*p;
+                    o[1] += n[0]*p;
+                } 
             }
         }
-        if (Math.random()<=0.2) { // Chance for a split road
-            p = (int)Math.floor(Math.random()*2)*2 -1; // polarity
-            int[] o = new int[2];// Idk how to replicate by value XD 
-            o[0]=b[0];
-            o[1]=b[1]; 
-            int[] n2 = new int[2];
-            n2[0] = n[1]*p;
-            n2[1] = n[0]*p; // use tangent vector
 
-            while (pointInDomain(o)) {
-                cell = cells[o[0]][o[1]];
-                cell.terrain = new Road();
-                o[0] += n2[0];
-                o[1] += n2[1];
-            } 
-        }
     }
 
     private char colToLabel(int col) {
